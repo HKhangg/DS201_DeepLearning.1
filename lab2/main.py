@@ -7,6 +7,8 @@ import logging
 
 from lab2.mnist import MNISTDataset, collate_fn
 from lab2.lenet import LeNet
+from lab2.vinafood21 import VinaFood21, vinafood_collate_fn
+from lab2.googlenet import GoogLeNet
 
 logging.basicConfig(
     level=logging.INFO,                                   
@@ -110,6 +112,23 @@ def main(task):
         metrics_1 = evaluate(mnist_test_dataloader, model_1)
         logger.info(f"Metrics for LeNet model: {metrics_1}")
         print(f"Metrics for LeNet model: {metrics_1}")
+    if task == 2:
+        vinafood21_train_path = '/kaggle/input/vinafood21/VinaFood21/train'
+        vinafood21_test_path  = '/kaggle/input/vinafood21/VinaFood21/test'
+        
+        vinafood21_train_dataset = VinaFood21(vinafood21_train_path)
+        vinafood21_test_dataset = VinaFood21(vinafood21_test_path)
+        vinafood21_train_dataloader = DataLoader(vinafood21_train_dataset, batch_size=batch_size, shuffle=True, collate_fn=vinafood_collate_fn)
+        vinafood21_test_dataloader = DataLoader(vinafood21_test_dataset, batch_size=1, shuffle=False, collate_fn=vinafood_collate_fn)
+        
+        model_2 = GoogLeNet(num_classes=21).to(device)
+        optimizer_2 = torch.optim.Adam(model_2.parameters(), lr=learning_rate)
+
+        logger.info("Training GoogLeNet model")
+        train(vinafood21_train_dataloader, model_2, loss_fn, optimizer_2, EPOCHS)
+        metrics_2 = evaluate(vinafood21_test_dataloader, model_2)
+        logger.info(f"Metrics for GoogLeNet model: {metrics_2}")
+        print(f"Metrics for GoogLeNet model: {metrics_2}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
