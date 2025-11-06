@@ -9,6 +9,7 @@ from lab2.mnist import MNISTDataset, collate_fn
 from lab2.lenet import LeNet
 from lab2.vinafood21 import VinaFood21, vinafood_collate_fn
 from lab2.googlenet import GoogLeNet
+from lab2.resnet18 import ResNet18
 
 logging.basicConfig(
     level=logging.INFO,                                   
@@ -24,7 +25,7 @@ logger = logging.getLogger(__name__)
 device = "cuda" if torch.cuda.is_available() else "cpu"
 logger.info(f"Using {device} device")
 
-EPOCHS = 10
+EPOCHS = 3
 
 batch_size = 32
 learning_rate = 0.01
@@ -129,6 +130,23 @@ def main(task):
         metrics_2 = evaluate(vinafood21_test_dataloader, model_2)
         logger.info(f"Metrics for GoogLeNet model: {metrics_2}")
         print(f"Metrics for GoogLeNet model: {metrics_2}")
+    if task == 3:
+        vinafood21_train_path = '/kaggle/input/vinafood21/VinaFood21/train'
+        vinafood21_test_path  = '/kaggle/input/vinafood21/VinaFood21/test'
+        
+        vinafood21_train_dataset = VinaFood21(vinafood21_train_path)
+        vinafood21_test_dataset = VinaFood21(vinafood21_test_path)
+        vinafood21_train_dataloader = DataLoader(vinafood21_train_dataset, batch_size=batch_size, shuffle=True, collate_fn=vinafood_collate_fn)
+        vinafood21_test_dataloader = DataLoader(vinafood21_test_dataset, batch_size=1, shuffle=False, collate_fn=vinafood_collate_fn)
+        
+        model_3 = ResNet18(num_classes=21).to(device)    
+        optimizer_3 = torch.optim.Adam(model_3.parameters(), lr=learning_rate)
+        
+        logger.info("Training ResNet18 model")
+        train(vinafood21_train_dataloader, model_3, loss_fn, optimizer_3, EPOCHS)
+        metrics_3 = evaluate(vinafood21_test_dataloader, model_3)
+        logger.info(f"Metrics for ResNet18 model: {metrics_3}")
+        print(f"Metrics for ResNet18 model: {metrics_3}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
