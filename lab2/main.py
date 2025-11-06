@@ -92,10 +92,10 @@ def main(task):
         return
 
     if task == 1:
-        mnist_train_image_path = "lab1/mnist/train-images.idx3-ubyte"
-        mnist_train_label_path = "lab1/mnist/train-labels.idx1-ubyte"
-        mnist_test_image_path = "lab1/mnist/t10k-images.idx3-ubyte"
-        mnist_test_label_path = "lab1/mnist/t10k-labels.idx1-ubyte"
+        mnist_train_image_path = "/kaggle/input/mnist-data/train-images.idx3-ubyte"
+        mnist_train_label_path = "/kaggle/input/mnist-data/train-labels.idx1-ubyte"
+        mnist_test_image_path = "/kaggle/input/mnist-data/t10k-images.idx3-ubyte"
+        mnist_test_label_path = "/kaggle/input/mnist-data/t10k-labels.idx1-ubyte"
         
         mnist_train_dataset = MNISTDataset(mnist_train_image_path, mnist_train_label_path)
         mnist_test_dataset = MNISTDataset(mnist_test_image_path, mnist_test_label_path)
@@ -115,5 +115,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--task", type=int, required=True, help="Select model: 1=LeNet, 2=GoogLeNet, 3=ResNet18, 4=PretrainedResNet")
     args = parser.parse_args()
-    
+
     main(args.task)
