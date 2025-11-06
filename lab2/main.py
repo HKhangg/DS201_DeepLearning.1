@@ -5,8 +5,8 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 from tqdm import tqdm
 import logging
 
-from mnist import MNISTDataset, collate_fn
-from lenet import LeNet
+from lab2.mnist import MNISTDataset, collate_fn
+from lab2.lenet import LeNet
 
 logging.basicConfig(
     level=logging.INFO,                                   
