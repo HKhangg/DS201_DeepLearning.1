@@ -10,6 +10,7 @@ from lab2.lenet import LeNet
 from lab2.vinafood21 import VinaFood21, vinafood_collate_fn
 from lab2.googlenet import GoogLeNet
 from lab2.resnet18 import ResNet18
+from lab2.pretrained_resnet import PretrainedResnet
 
 logging.basicConfig(
     level=logging.INFO,                                   
@@ -147,6 +148,23 @@ def main(task):
         metrics_3 = evaluate(vinafood21_test_dataloader, model_3)
         logger.info(f"Metrics for ResNet18 model: {metrics_3}")
         print(f"Metrics for ResNet18 model: {metrics_3}")
+    if task == 4:
+        vinafood21_train_path = '/kaggle/input/vinafood21/VinaFood21/train'
+        vinafood21_test_path  = '/kaggle/input/vinafood21/VinaFood21/test'
+        
+        vinafood21_train_dataset = VinaFood21(vinafood21_train_path)
+        vinafood21_test_dataset = VinaFood21(vinafood21_test_path)
+        vinafood21_train_dataloader = DataLoader(vinafood21_train_dataset, batch_size=batch_size, shuffle=True, collate_fn=vinafood_collate_fn)
+        vinafood21_test_dataloader = DataLoader(vinafood21_test_dataset, batch_size=1, shuffle=False, collate_fn=vinafood_collate_fn)
+        
+        model_4 = PretrainedResnet().to(device)
+        optimizer_4 = torch.optim.Adam(model_4.parameters(), lr=learning_rate)
+        
+        logger.info("Training Pre-trained ResNet model")
+        train(vinafood21_train_dataloader, model_4, loss_fn, optimizer_4, EPOCHS)
+        metrics_4 = evaluate(vinafood21_test_dataloader, model_4)
+        logger.info(f"Metrics for Pre-trained ResNet model: {metrics_4}")
+        print(f"Metrics for Pre-trained ResNet model: {metrics_4}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
