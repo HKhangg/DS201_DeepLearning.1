@@ -110,3 +110,10 @@ def main(task):
         metrics_1 = evaluate(mnist_test_dataloader, model_1)
         logger.info(f"Metrics for LeNet model: {metrics_1}")
         print(f"Metrics for LeNet model: {metrics_1}")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--task", type=int, required=True, help="Select model: 1=LeNet, 2=GoogLeNet, 3=ResNet18, 4=PretrainedResNet")
+    args = parser.parse_args()
+    
+    main(args.task)
