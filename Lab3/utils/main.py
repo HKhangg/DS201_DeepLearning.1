@@ -4,7 +4,10 @@ import os
 import urllib.request
 from pathlib import Path
 
-sys.path.append('..')
+# Thêm đường dẫn tuyệt đối
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.insert(0, parent_dir)
 
 from data.vocab import Vocab
 from model.lstm import LSTM
@@ -18,8 +21,10 @@ def download_phoner_dataset():
     """Tự động tải dataset PhoNER về"""
     print("Đang tải PhoNER dataset...")
     
-    # Tạo thư mục
-    data_dir = Path('../data/phoner/word')
+    # Tạo thư mục - sử dụng đường dẫn tuyệt đối
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.dirname(current_dir)
+    data_dir = Path(parent_dir) / 'data' / 'phoner' / 'word'
     data_dir.mkdir(parents=True, exist_ok=True)
     
     base_url = 'https://raw.githubusercontent.com/VinAIResearch/PhoNER_COVID19/main/data/word/'
@@ -51,10 +56,12 @@ def run_task1():
     print("BÀI 1: LSTM cho phân loại văn bản")
     print("="*60 + "\n")
     
-    # Đường dẫn dữ liệu
-    training_path = '/kaggle/input/uit-vsfc/UIT-VSFC-train.json'
-    validation_path = '/kaggle/input/uit-vsfc/UIT-VSFC-dev.json'
-    testing_path = '/kaggle/input/uit-vsfc/UIT-VSFC-test.json'
+    # Đường dẫn dữ liệu - sử dụng đường dẫn tuyệt đối
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.dirname(current_dir)
+    training_path = os.path.join(parent_dir, 'UIT-VSFC-train.json')
+    validation_path = os.path.join(parent_dir, 'UIT-VSFC-dev.json')
+    testing_path = os.path.join(parent_dir, 'UIT-VSFC-test.json')
     
     # Tạo vocabulary
     vocabulary = Vocab(training_path, 'sentence', 'sentiment')
@@ -63,13 +70,16 @@ def run_task1():
     lstm_model = LSTM(vocabulary, embedding_size=256, hidden_size=256, layer_count=5)
     
     # Tạo task
+    checkpoint_dir = os.path.join(parent_dir, 'checkpoints', 'lstm')
+    os.makedirs(checkpoint_dir, exist_ok=True)
+    
     lstm_task = TextClassificationTask(
         vocabulary=vocabulary,
         training_path=training_path,
         validation_path=validation_path,
         testing_path=testing_path,
         neural_model=lstm_model,
-        model_checkpoint_path='../checkpoints/lstm',
+        model_checkpoint_path=checkpoint_dir,
         learning_rate=1e-3
     )
     
@@ -91,10 +101,12 @@ def run_task2():
     print("BÀI 2: GRU cho phân loại văn bản")
     print("="*60 + "\n")
     
-    # Đường dẫn dữ liệu
-    training_path = '/kaggle/input/uit-vsfc/UIT-VSFC-train.json'
-    validation_path = '/kaggle/input/uit-vsfc/UIT-VSFC-dev.json'
-    testing_path = '/kaggle/input/uit-vsfc/UIT-VSFC-test.json'
+    # Đường dẫn dữ liệu - sử dụng đường dẫn tuyệt đối
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.dirname(current_dir)
+    training_path = os.path.join(parent_dir, 'UIT-VSFC-train.json')
+    validation_path = os.path.join(parent_dir, 'UIT-VSFC-dev.json')
+    testing_path = os.path.join(parent_dir, 'UIT-VSFC-test.json')
     
     # Tạo vocabulary
     vocabulary = Vocab(training_path, 'sentence', 'sentiment')
@@ -103,13 +115,16 @@ def run_task2():
     gru_model = GRU(vocabulary, embedding_size=256, hidden_size=256, layer_count=5)
     
     # Tạo task
+    checkpoint_dir = os.path.join(parent_dir, 'checkpoints', 'gru')
+    os.makedirs(checkpoint_dir, exist_ok=True)
+    
     gru_task = TextClassificationTask(
         vocabulary=vocabulary,
         training_path=training_path,
         validation_path=validation_path,
         testing_path=testing_path,
         neural_model=gru_model,
-        model_checkpoint_path='../checkpoints/gru',
+        model_checkpoint_path=checkpoint_dir,
         learning_rate=1e-3
     )
     
@@ -136,11 +151,13 @@ def run_task3():
         print("Lỗi: Không thể tải dataset. Vui lòng tải thủ công.")
         return
     
-    # Đường dẫn dữ liệu
-    base_path = '../data/phoner/word'
-    training_path = f'{base_path}/train_word.json'
-    validation_path = f'{base_path}/dev_word.json'
-    testing_path = f'{base_path}/test_word.json'
+    # Đường dẫn dữ liệu - sử dụng đường dẫn tuyệt đối
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.dirname(current_dir)
+    base_path = os.path.join(parent_dir, 'data', 'phoner', 'word')
+    training_path = os.path.join(base_path, 'train_word.json')
+    validation_path = os.path.join(base_path, 'dev_word.json')
+    testing_path = os.path.join(base_path, 'test_word.json')
     
     # Tạo vocabulary
     vocabulary = Vocab(training_path, 'words', 'tags')
@@ -149,7 +166,7 @@ def run_task3():
     bilstm_model = BiLSTM(vocabulary, embedding_size=128, hidden_size=256, layer_count=2)
     
     # Tạo task
-    checkpoint_dir = '../checkpoints/bilstm'
+    checkpoint_dir = os.path.join(parent_dir, 'checkpoints', 'bilstm')
     os.makedirs(checkpoint_dir, exist_ok=True)
     
     bilstm_task = SequentialLabelingTask(
