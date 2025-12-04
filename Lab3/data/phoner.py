@@ -12,7 +12,13 @@ class PhoNer(Dataset):
         self.file_path = file_path
         self.vocabulary = vocabulary
 
-        self.dataset = json.load(open(file_path, 'r', encoding='utf-8'))
+        # Đọc JSON Lines format (mỗi dòng là 1 object JSON)
+        self.dataset = []
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    self.dataset.append(json.loads(line))
     
     def __len__(self):
         return len(self.dataset)

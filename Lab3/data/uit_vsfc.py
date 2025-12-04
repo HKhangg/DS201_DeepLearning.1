@@ -13,7 +13,20 @@ class UIT_VSFC(Dataset):
         self.target_field = target_field
         self.vocabulary = vocabulary
 
-        self.dataset = json.load(open(file_path, 'r', encoding='utf-8'))
+        # Đọc dataset - hỗ trợ cả JSON array và JSON Lines format
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read().strip()
+            
+        # Thử JSON array trước
+        try:
+            self.dataset = json.loads(content)
+        except json.JSONDecodeError:
+            # Nếu lỗi, thử JSON Lines (mỗi dòng là 1 object)
+            self.dataset = []
+            for line in content.split('\n'):
+                line = line.strip()
+                if line:
+                    self.dataset.append(json.loads(line))
     
     def __len__(self):
         return len(self.dataset)

@@ -24,7 +24,20 @@ class Vocab():
         self.build_vocabulary()
 
     def build_vocabulary(self):
-        dataset = json.load(open(self.data_path, 'r', encoding='utf-8'))
+        # Đọc dataset - hỗ trợ cả JSON array và JSON Lines format
+        dataset = []
+        with open(self.data_path, 'r', encoding='utf-8') as f:
+            content = f.read().strip()
+            
+        # Thử JSON array trước
+        try:
+            dataset = json.loads(content)
+        except json.JSONDecodeError:
+            # Nếu lỗi, thử JSON Lines (mỗi dòng là 1 object)
+            for line in content.split('\n'):
+                line = line.strip()
+                if line:
+                    dataset.append(json.loads(line))
 
         for record in dataset:
 
