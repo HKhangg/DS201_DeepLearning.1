@@ -17,9 +17,9 @@ def run_task1():
     print("="*60 + "\n")
     
     # Đường dẫn dữ liệu
-    training_path = '../UIT-VSFC-train.json'
-    validation_path = '../UIT-VSFC-dev.json'
-    testing_path = '../UIT-VSFC-test.json'
+    training_path = '/kaggle/input/uit-vsfc/UIT-VSFC-train.json'
+    validation_path = '/kaggle/input/uit-vsfc/UIT-VSFC-dev.json'
+    testing_path = '/kaggle/input/uit-vsfc/UIT-VSFC-test.json'
     
     # Tạo vocabulary
     vocabulary = Vocab(training_path, 'sentence', 'sentiment')
@@ -57,9 +57,9 @@ def run_task2():
     print("="*60 + "\n")
     
     # Đường dẫn dữ liệu
-    training_path = '../UIT-VSFC-train.json'
-    validation_path = '../UIT-VSFC-dev.json'
-    testing_path = '../UIT-VSFC-test.json'
+    training_path = '/kaggle/input/uit-vsfc/UIT-VSFC-train.json'
+    validation_path = '/kaggle/input/uit-vsfc/UIT-VSFC-dev.json'
+    testing_path = '/kaggle/input/uit-vsfc/UIT-VSFC-test.json'
     
     # Tạo vocabulary
     vocabulary = Vocab(training_path, 'sentence', 'sentiment')
