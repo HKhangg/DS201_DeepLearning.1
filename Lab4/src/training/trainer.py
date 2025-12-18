@@ -99,7 +99,7 @@ class Trainer:
         
         # Setup optimizer and loss
         self.optimizer = Adam(self.model.parameters(), lr=learning_rate)
-        self.criterion = nn.CrossEntropyLoss(ignore_index=self.vocab.pad_id)
+        self.criterion = nn.CrossEntropyLoss(ignore_index=self.vocab.PAD_ID)
         
         # Setup evaluation metric
         self.rouge_scorer = Rouge()
