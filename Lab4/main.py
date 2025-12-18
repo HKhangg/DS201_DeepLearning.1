@@ -16,7 +16,7 @@ def run_assignment_1(args):
     )
 
     vocab = Vocab(
-        path=args.train_path,
+        data_file=args.train_path,
         src_lang="vietnamese",
         tar_lang="english"
     )
@@ -61,7 +61,7 @@ def run_assignment_2(args):
     )
 
     vocab = Vocab(
-        path=args.train_path,
+        data_file=args.train_path,
         src_lang="vietnamese",
         tar_lang="english"
     )
@@ -106,7 +106,7 @@ def run_assignment_3(args):
     )
 
     vocab = Vocab(
-        path=args.train_path,
+        data_file=args.train_path,
         src_lang="vietnamese",
         tar_lang="english"
     )
