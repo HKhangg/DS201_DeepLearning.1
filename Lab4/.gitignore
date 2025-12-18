@@ -1,0 +1,49 @@
+# Assignment notebook
+assignments.ipynb
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs and checkpoints
+logs/
+checkpoints/
+*.log
+
+# Data files
+*.json
+!src/data/*.json
+
+# Model weights
+*.pt
+*.pth
+*.h5
+*.pkl
+
+# OS
+.DS_Store
+Thumbs.db
