@@ -134,7 +134,7 @@ class Trainer:
         
         for i in range(src_ids.size(0)):
             # Decode reference
-            ref = self.vocab.decode_sentence(
+            ref = self.vocab.decode(
                 tar_ids[i].tolist(), 
                 self.vocab.tar_lang
             )
@@ -142,7 +142,7 @@ class Trainer:
             
             # Decode prediction
             if pred_ids is not None:
-                pred = self.vocab.decode_sentence(
+                pred = self.vocab.decode(
                     pred_ids[i].tolist(), 
                     self.vocab.tar_lang
                 )
