@@ -16,7 +16,7 @@ from rouge import Rouge
 
 from src.utils.logging import setup_logger
 from src.data.vocab import Vocab
-from src.data.PhoMT import PhoMT
+from src.data.PhoMT import PhoMTDataset
 
 
 class Trainer:
@@ -68,28 +68,28 @@ class Trainer:
         
         # Load datasets
         self.logger.info("Loading datasets")
-        self.train_dataset = PhoMT(train_path, self.vocab)
-        self.val_dataset = PhoMT(dev_path, self.vocab) if dev_path else None
-        self.test_dataset = PhoMT(test_path, self.vocab) if test_path else None
+        self.train_dataset = PhoMTDataset(train_path, self.vocab)
+        self.val_dataset = PhoMTDataset(dev_path, self.vocab) if dev_path else None
+        self.test_dataset = PhoMTDataset(test_path, self.vocab) if test_path else None
         
         # Create data loaders
         self.train_loader = DataLoader(
             self.train_dataset,
             batch_size=batch_size,
             shuffle=True,
-            collate_fn=self.train_dataset.collate_fn
+            collate_fn=PhoMTDataset.collate_batch
         )
         
         self.val_loader = DataLoader(
             self.val_dataset,
             batch_size=batch_size,
-            collate_fn=self.val_dataset.collate_fn
+            collate_fn=PhoMTDataset.collate_batch
         ) if self.val_dataset else None
         
         self.test_loader = DataLoader(
             self.test_dataset,
             batch_size=batch_size,
-            collate_fn=self.test_dataset.collate_fn
+            collate_fn=PhoMTDataset.collate_batch
         ) if self.test_dataset else None
         
         # Setup device and model
