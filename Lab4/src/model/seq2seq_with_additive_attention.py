@@ -124,8 +124,9 @@ class Seq2SeqWithAdditiveAttention(nn.Module):
         # Decode with teacher forcing
         decoder_input = tar_ids[:, 0:1]
         for t in range(1, tar_len):
-            # Decoder step
-            decoder_output, hidden, cell = self.decoder(hidden, cell, decoder_input)
+            # Decoder step (get raw LSTM output, not projected logits)
+            decoder_output, hidden, cell = self.decoder(hidden, cell, decoder_input, 
+                                                       return_output=True)
             
             # Compute attention context
             context, _ = self.attention(
@@ -181,8 +182,9 @@ class Seq2SeqWithAdditiveAttention(nn.Module):
         # Generate tokens autoregressively
         predictions = []
         for _ in range(self.vocab.max_length):
-            # Decoder step
-            decoder_output, hidden, cell = self.decoder(hidden, cell, decoder_input)
+            # Decoder step (get raw LSTM output, not projected logits)
+            decoder_output, hidden, cell = self.decoder(hidden, cell, decoder_input,
+                                                       return_output=True)
             
             # Attention
             context, _ = self.attention(

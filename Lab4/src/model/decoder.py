@@ -17,8 +17,13 @@ class Decoder(nn.Module):
         self.fc = nn.Linear(hidden_dim, vocab.tar_vocab_size)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, h: torch.Tensor, c: torch.Tensor, tar_ids: torch.Tensor):
+    def forward(self, h: torch.Tensor, c: torch.Tensor, tar_ids: torch.Tensor, 
+                return_output=False):
         embedded = self.dropout(self.embed(tar_ids))
         output, (h, c) = self.lstm(embedded, (h, c))
+        
+        if return_output:
+            return output, h, c
+        
         logits = self.fc(output)
         return logits, h, c
